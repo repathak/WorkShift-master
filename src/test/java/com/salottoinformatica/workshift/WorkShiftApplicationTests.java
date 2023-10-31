@@ -3,7 +3,7 @@ package com.salottoinformatica.workshift;
 import com.salottoinformatica.workshift.jpa.entity.EmployeePersonalData;
 import com.salottoinformatica.workshift.jpa.entity.EmployeeShifts;
 import com.salottoinformatica.workshift.jpa.entity.EmployeeSkills;
-import com.salottoinformatica.workshift.jpa.service.EmployeeShiftsService;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -188,6 +188,7 @@ class WorkShiftApplicationTests {
     public boolean canWorkInShop(EmployeeSkills shop) {
 
         List<EmployeeSkills> skills = new ArrayList<>();
+        List<EmployeeShifts> shifts = new ArrayList<>();
 
         // Rule 1: A user can work in different shops
         for (EmployeeSkills skill : skills) {
@@ -195,6 +196,16 @@ class WorkShiftApplicationTests {
                 return false; // User is already working in the same shop
             }
         }
+        // Rule 1: A user can work in different shops
+
+
+        // Rule 2: A user cannot work in multiple shops at the same time
+        for (EmployeeShifts shift : shifts) {
+            if (shift.getEndShift().after(Timestamp.valueOf(LocalDateTime.now()))) {
+                return false; // User is already working in another shop
+            }
+        }
+
 
         // Add more rules here if needed
 
